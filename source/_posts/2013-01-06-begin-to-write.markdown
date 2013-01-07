@@ -19,5 +19,3 @@ categories: index
 * markdown
   语法更是不用说了。通过官方文档学习后，你还是会遇到一些问题，此时一个好的途径是去github上看别人写的文章, 学习别人的排版。
 * 我将要纪录`git`, `vim`, `ruby`, `ruby on rails` 的一些笔记。
-
-

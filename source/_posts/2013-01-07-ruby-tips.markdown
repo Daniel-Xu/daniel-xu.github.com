@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Ruby 基础 "
+date: 2013-01-07 11:23
+comments: false
+categories: ruby
+---
+
+gets 和 gets.chomp
+-----------------
+
+gets 和 gets.chomp 都可以从外部读入输入，但是二者有些区别：
+gets 会在读入变量后，加一个\n
+gets.chomp 不会这样
+
+![alt text](/images/ruby/gets.png "gets")
+
+![alt text](/images/ruby/g_r.png "res")
+
+*notice*: 有时找不到gets时，需要这样调用：
+    
+    STDIN.gets.chomp()
+<!-- more -->
+多行输出
+----
+
+当你想多行输出时，请用下面的方法
+
+![alt text](/images/ruby/multi.png "multi")
+
+*notice*:`<<` 后面接的 `name` 不能有空格
+
+命令行参数
+-----
+
+运行ruby程序时要 `ruby name.rb`, 在 `name.rb` 后面可以跟参数，
+这些参数会在`ARGV`中存着。
+
+![alt text](/images/ruby/p_r.png "p_r")
+
+![alt text](/images/ruby/param.png "p")
+
+文件的读取和输出
+--------
+
+    text = File.open("filename")
+    puts text.read()
+
