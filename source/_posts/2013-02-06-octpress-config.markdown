@@ -12,7 +12,7 @@ categories: octpress
 而这对于rails开发来说很轻松，所以就选择它了
 
 * 用markdown不用在意格式, 专注于内容, 提高效率
-
+<!-- more -->
 octpress 基本流程
 ------------
 
