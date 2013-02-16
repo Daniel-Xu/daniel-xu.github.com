@@ -6,8 +6,8 @@ comments: true
 categories: mac
 ---
 
-alfred 自己定义搜索
-=============
+alfred 自定义搜索
+-------------
 
 自定义搜索，以 有道字典为例：
 
