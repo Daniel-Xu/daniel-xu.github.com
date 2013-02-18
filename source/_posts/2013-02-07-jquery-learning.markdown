@@ -98,5 +98,107 @@ js 闭包是个函数， 表现形势 是 再父函数中定义了一个子函�
       $("<p>click me</p>").appendTo("div.pend").click( creatF(i) ); // i 是 0 － 4
     }
        
+再举个闭包的例子，同时也和this有关系,
 
+例子1
+    var name = "hello";
 
+    var obj = {
+      name : "world", 
+
+      getname : function() {
+        var that = this;
+        return function(){
+          return that.name; 
+        };         
+      }
+
+    };
+
+    alert(obj.getname()()); // world
+例子2
+    var name = "hello";
+
+    var obj = {
+      name : "world", 
+
+      getname : function() {
+        return function(){
+          return this.name; 
+        };         
+      }
+
+    };
+
+    alert(obj.getname()()); // hello
+例子2中的obj.getname() 是一个匿名函数, 而调用这个匿名函数的是最外面的window，
+所以， 会是 显示 hello
+
+* jquery 基础
+
+检测页面加载完成：
+    $(document).ready(function() {
+        console.log("hello");
+    });
+其简写为：
+    $(function() {
+        console.log("hello");
+    });
+除了匿名函数，还可以传递 命名函数：
+    function readyFunc() {
+        // code 
+    };
+    $(document).ready(readyFunc);
+
+选择器：
+    $("div.myclass"); // 指定元素类型会提高效率
+    $("#myform :input"); // myform 下的所有类input的元素，例如textarea 也会被选中
+不同的选择器的使用会对js效率有比较大的影响，所以要选择合适的选择器，当选完元素后，会返回一个对象，而且这个对象
+总是为真，所以判断的正确方法是判断长度：
+    if($("div").length) { }
+
+保存元素：
+    
+一般用选择器选择以后，如果以后要用就需要用变量存起来，一般的写法如下：
+    var $divs = $("div"); //此处的 $divs  就是一个变量， 没有特殊的含义, 且元素变了此变量不会动态更新
+
+链式结构：
+
+    $("h3")
+      .eq(1)
+        .html("nimei")
+      .end()    // 返回到原始选择器，即$("h3")
+      .eq(0)
+        .html("success")
+
+创建新元素：
+    $("<p>click me</p>").appendTo("div.pend"); // $("<p>click me</p>")为新创建的元素
+    $("ul").append("<li>click me</li>"); // 创建并放到页面上
+
+jquery 事件:
+    $("p").click(function(){
+        // function 
+    })
+
+    $("p").bind(
+        "click change", // bind multiple event 
+        { foo : "bar" }, // pass data
+        function(eventObject) {
+            console.log(eventObject.type, eventObject.data); // type-> "click",  data-> {foo : bar}
+        } // 函数中的eventObj是自己定的，可以随便命名，保持一致即可
+    );
+绑定事件的时候，在内部会得到一个event obj，这个对象有很多有用的属性和方法：
+    pageX, pageY
+    type
+    which
+    data
+    targe
+    preventDefault(); stopPropagation
+例子如下：
+    $("a").click(function(e){
+        var $this = $(this);
+        if ($this.attr("href").match('http://www.baidu.com')) {
+          e.preventDefault();
+          $this.addClass("evil");
+        }
+    })
