@@ -202,3 +202,9 @@ jquery 事件:
           $this.addClass("evil");
         }
     })
+
+* jquery对象 和 DOM对象
+    jqueryobj = $(DOMobj) // DOM对象转化为jquery对象
+    DOMobj = jqueryobj[0] // jquery对象转化为DOM对象
+
+
