@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "输入框 聚焦和失焦"
+title: "输入框 focus和blur"
 date: 2013-02-19 17:36
 comments: true
 categories: jquery
@@ -9,7 +9,7 @@ categories: jquery
 输入框
 ---
     <input id="task_t" type="text" value="<%= @conf.org.topic %>" name="org[topic]">
-
+<!-- more -->
 jquery  代码
 ----------
 
