@@ -7,8 +7,7 @@ categories: vim
 ---
 
 vim 资源
-------
-
+----
 
 [coolshell 练级攻略](http://coolshell.cn/articles/5426.html) 中讲的都很好, 也是
 我经常用的。
