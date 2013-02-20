@@ -3,7 +3,7 @@ layout: post
 title: "代码学习"
 date: 2013-02-20 18:09
 comments: true
-categories: 
+categories: ruby
 ---
 
 停止google
