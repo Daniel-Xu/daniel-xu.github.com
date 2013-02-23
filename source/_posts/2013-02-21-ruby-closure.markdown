@@ -61,6 +61,7 @@ ruby 中的几种闭包简介
 
 
 * snippets 型闭包 
+
   block 和 proc是这种类型的闭包, 这二者都是代码片段，一般没有 `return`, 但是
   有`return `时，比较特殊。
 
