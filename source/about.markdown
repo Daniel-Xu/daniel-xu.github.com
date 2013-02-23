@@ -10,4 +10,4 @@ Hello, I’m Daniel-Xu.
 
 I’m a programmer, photographer 
 
-If you want to get in touch with me, email is best.
+If you want to get in touch with me, [email](xwd.forever@gmail.com) is best.
