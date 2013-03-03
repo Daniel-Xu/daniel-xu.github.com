@@ -1,0 +1,70 @@
+---
+layout: post
+title: "git fork 过程"
+date: 2013-03-03 22:34
+comments: true
+categories: git 
+---
+
+资源
+--
+
+[peter视频](http://happycasts.net)
+
+过程
+--
+
+* 找到要克隆的repo
+
+* 将其clone到本地
+
+```
+git clone repo_address
+
+```
+* 设置远程地址
+
+因为clone以后，会有有个默认的远程地址orgin, 但这个是克隆过来的存在于自己帐号上面的repo，所以还要加个原作者的repo地址, 并将远程地址命名为`upstream`
+``` sh
+git remote add upstream source_address 
+```
+
+* 增加代码前，先更新一遍
+
+``` sh
+//从远程repo upstream 的master 分支更新到本地当前分支（一般为master分支）
+git pull upstream master
+
+```
+
+* 本地建立新分支，用于增加功能
+
+``` sh
+git checkout -b add_sth
+```
+
+* 做修改，并生成版本 
+
+* 如果经过的时间比较长，先回到master分支， 从原repo得到最新的代码, 并rebase
+
+``` sh
+git checkout master
+git pull upstream master
+git rebase master add_sth //对master进行rebase
+```
+
+* 将commit 发布到自己的clone的repo中的add_sth分支, 并在github上发送pull request
+
+``` sh
+git push origin add_sth
+```
+
+* 成功后删除本地和远端add_sth分支
+ 
+``` sh
+git branch -D add_sth
+git push origin :add_sth
+git pull upstream master
+```
+
+
