@@ -1,0 +1,88 @@
+---
+layout: post
+title: "ruby 载入类库"
+date: 2013-03-06 10:56
+comments: true
+categories: ruby
+---
+
+## 资源 ##
+
+《ruby 元编程》
+
+[blog](http://caok1231.com/blog/2013/02/08/ruby-require-vs-load-vs-include-vs-extend/)
+<!-- more -->
+## 笔记 ##
+
+有些class 和 module 不在同一个文件中，如果想让它们在一起用，就需要将其载入,
+ruby 载入类库的方式有 require  和 load
+
+### include ###
+
+include 用于mix-in 一个模块到另一模块或类中
+
+``` ruby
+module Info
+  def p_info
+  end
+end
+
+class Test
+  include Info
+  # ...
+end
+
+my_info = Test.new.p_info # Test类就有了Info module里的方法
+```
+
+### extend ###
+
+它有个简单的作用是载入类方法, 其他的以后研究
+
+``` ruby
+module Info
+  def p_info
+  end
+end
+
+class Test
+  extend Info
+  # ...
+end
+
+puts Test.p_info # p_info 成为了类方法，不再是实例方法
+```
+
+### require ###
+
+当两个类库不在一个文件时，需要引入，<em style="color:red">require 只能载入一次</em> ,
+require 导入类库时不需要加.rb后缀
+
+a.rb
+``` ruby
+module Info
+  def p_info
+  end
+end
+```
+b.rb
+``` ruby
+require "a"
+
+class Test
+  include Info
+  # ...
+end
+```
+
+### load ###
+
+<em style="color:red">load 可以加载多次, 每次调用库都会被重新加载</em>, 加载时需要指定文件名后缀。
+``` ruby
+# load 加载时需要.rb后缀
+load 'example.rb'
+```
+
+
+
+
