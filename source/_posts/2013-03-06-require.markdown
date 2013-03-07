@@ -37,7 +37,7 @@ my_info = Test.new.p_info # Test类就有了Info module里的方法
 
 ### extend ###
 
-它有个简单的作用是载入类方法, 其他的以后研究
+extend 用于扩展类方法， 或对象扩展(增加对象的单件方法)
 
 ``` ruby
 module Info
@@ -51,6 +51,18 @@ class Test
 end
 
 puts Test.p_info # p_info 成为了类方法，不再是实例方法
+```
+对象扩展
+``` ruby
+module Info
+  def p_info
+    puts 'hello world'
+  end
+end
+
+obj = Object.new
+obj.extend Info
+obj.p_info # 此方法只有obj这个对象有，是其的单件方法
 ```
 
 ### require ###
