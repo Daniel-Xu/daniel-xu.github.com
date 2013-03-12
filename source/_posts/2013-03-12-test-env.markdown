@@ -1,0 +1,205 @@
+---
+layout: post
+title: "rails test 环境"
+date: 2013-03-12 11:08
+comments: true
+categories: rails
+---
+
+## 测试环境 ##
+
+rspec + capybara + guard + spork
+<!-- more -->
+## 过程 ##
+
+### rspec ###
+
+用到的gem
+``` ruby
+#这个加在test 和 development 环境里， development 环境里有他可以用些特定的命令
+gem 'rspec-rails', '2.11.0'
+
+#模拟用户的交互, 加在 test环境中
+gem 'capybara', '1.1.2’
+```
+
+不生成自动的test文件
+``` ruby
+# 建项目
+rails new twitter --skip-test-unit
+
+# 加controller时的命令
+rails g controller static_pages home help --no-test-framework
+```
+
+rspec 命令
+``` ruby
+#rspec环境的建立
+ralis generate rspec:install
+
+#集成测试文件
+rails generate integration_test static_pages
+
+#测试命令
+rspec /spec
+```
+
+## guard ##
+
+为了不用每次去console里敲测试命令，用到了guard来自动发现变化，进行自动测试。
+
+用到的gem, 添加完后进行`bundle install`
+``` ruby
+group :test, :development do
+  gem 'guari-rspec', '1.2.1'
+end
+```
+
+``` ruby
+group :test do
+  gem 'rb-fsevent', '0.9.1', :require => false
+  gem 'terminal-notifier-guard'
+end
+```
+
+初始化guard, 这样guard能和rspec一起工作，
+``` ruby
+guard init rspec
+```
+
+修改guardfile, 添加下列内容, 然后`guard`启动
+``` ruby
+require 'active_support/core_ext'
+
+guard 'rspec', :version => 2, :all_after_pass => false do
+
+  watch(%r{^app/controllers/(.+)_(controller)\.rb$})  do |m|
+    ["spec/routing/#{m[1]}_routing_spec.rb",
+     "spec/#{m[2]}s/#{m[1]}_#{m[2]}_spec.rb",
+     "spec/acceptance/#{m[1]}_spec.rb",
+     (m[1][/_pages/] ? "spec/requests/#{m[1]}_spec.rb" :
+                       "spec/requests/#{m[1].singularize}_pages_spec.rb")]
+  end
+  watch(%r{^app/views/(.+)/}) do |m|
+    (m[1][/_pages/] ? "spec/requests/#{m[1]}_spec.rb" :
+                       "spec/requests/#{m[1].singularize}_pages_spec.rb")
+  end
+end
+```
+
+### spork ###
+
+避免重新加载整个 Rails 环境, 使用spork加速
+
+gemfile, 并`bundle install`
+``` ruby
+group :development, :test do
+  gem 'guard-spork', :github => 'guard/guard-spork'
+  gem 'spork', '0.9.2'
+end
+```
+运行spork
+``` ruby
+bundle exec spork --bootstrap
+```
+修改`spec/spec_helper.rb`设置文件, 并`spork` 开启spork
+``` ruby
+require 'rubygems'
+require 'spork'
+
+Spork.prefork do
+  # Loading more in this block will cause your tests to run faster. However,
+  # if you change any configuration or code from libraries loaded here, you'll
+  # need to restart spork for it take effect.
+  # This file is copied to spec/ when you run 'rails generate rspec:install'
+  ENV["RAILS_ENV"] ||= 'test'
+  require File.expand_path("../../config/environment", __FILE__)
+  require 'rspec/rails'
+  require 'rspec/autorun'
+
+  # Requires supporting ruby files with custom matchers and macros, etc,
+  # in spec/support/ and its subdirectories.
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+  RSpec.configure do |config|
+    # == Mock Framework
+    #
+    # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
+    #
+    # config.mock_with :mocha
+    # config.mock_with :flexmock
+    # config.mock_with :rr
+    config.mock_with :rspec
+
+    # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+    config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+    # If you're not using ActiveRecord, or you'd prefer not to run each of your
+    # examples within a transaction, remove the following line or assign false
+    # instead of true.
+    config.use_transactional_fixtures = true
+
+    # If true, the base class of anonymous controllers will be inferred
+    # automatically. This will be the default behavior in future versions of
+    # rspec-rails.
+    config.infer_base_class_for_anonymous_controllers = false
+  end
+end
+
+Spork.each_run do
+  # This code will be run each time you run your specs.
+end
+```
+
+新窗口的测试, 发现测试时间明显降低
+``` ruby
+time bundle exec rspec spec/requests/static_pages_spec.rb --drb
+```
+
+为了避免每次打 --drb， 在 rails.root 路径下的.rspec文件内加入`--drb`
+
+## guard 和 spork 联合 ##
+
+二者联合, 下面的命令会在guardfile内生成一段配置文件，按需修改
+``` ruby
+guard init spork
+```
+
+适应spork，修改guardfile
+``` ruby
+require 'active_support/core_ext'
+
+guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch(%r{^config/environments/.+\.rb$})
+  watch(%r{^config/initializers/.+\.rb$})
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('spec/spec_helper.rb')
+  watch('test/test_helper.rb')
+  watch('spec/support/')
+end
+
+guard 'rspec', :version => 2, :all_after_pass => false, :cli => '--drb' do
+  .
+  .
+  .
+end
+```
+
+之后就可以用`guard` 来在spork中启动测试了
+
+## trouble shooting ##
+
+1. [guard bug](http://stackoverflow.com/questions/14590399/error-on-start-when-using-spork-and-guard)
+
+2. mac lion growlnotify 不免费了，所以用其他的gem来替换。
+``` ruby
+gem 'terminal-notifier-guard'
+```
+
+## 参考 ##
+
+[ruby on rails tutorial](http://ruby.railstutorial.org)
+
