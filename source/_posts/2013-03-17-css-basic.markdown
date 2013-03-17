@@ -1,0 +1,78 @@
+---
+layout: post
+title: "css basic"
+date: 2013-03-17 10:53
+comments: true
+categories: css
+---
+
+## resource ##
+<!-- more -->
+[float tutorial](http://css.maxdesign.com.au/floatutorial/index.htm):
+动手做下这几个例子会了解一些基本知识。最后有两列、三列页面布局.
+
+[两列布局](http://www.456bereastreet.com/lab/developing_with_web_standards/csslayout/2-col/):
+没有页面设计经验时，可以参考这篇进行入门，从整体到局部进行两列页面布局。
+
+[三列布局](http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/)
+
+[阮一峰blog](http://www.ruanyifeng.com/blog/2010/03/cross-browser_css3_features.html)
+
+## basic ##
+
+* box model
+
+盒模型是比较重要的一个基础概念。
+
+一个盒子模型由element、padding、border、margin四部分组成.
+
+比较重要的是：
+element是盒子里的内容，element 可以是文字图片，也可以是div等嵌套的box， width和height是element的宽度和高度，而不是最外层盒子的。
+
+``` ruby
+box width = element width + element padding * 2 + element margin * 2 + border width * 2
+```
+
+* float
+
+float 一般用于浮动块
+
+<em style="color:red">重点：</em> 当浮动一个元素时，应该总是给其设定
+width，图片例外，因为图片有隐式的width， 否则有意想不到的效果。
+
+在float块之上的元素不会受其影响，但在其之下的元素会在float
+元素周围包围它。如果想让这种现象消失，用`clear:both`.
+
+* margin
+
+margin 是透明的，元素的背景色不会随着其margin的变化而变化。
+
+当两个垂直外边距相遇时，它们将形成一个外边距。取二者之间较大的margin.
+
+关于auto， 如果给元素的左右margin 都设为auto， 则元素一般会是居中。
+``` ruby
+margin:0 auto;
+```
+
+margin的简写：（顺序是顺时针顺序，上右下左）
+``` ruby
+margin:0;  # margin:0 0 0 0;
+margin:10px 20px; # margin 10px 20px 10px 20px;
+margin:10px 20px 30px; # margin 10px 20px 30px 20px;
+```
+
+* padding
+
+元素的背景色会随着其padding的变化而变化。
+
+padding 的简写和margin一样。
+
+* border
+
+border简写：
+``` ruby
+border:width style color;
+# border:1px solid gray;
+```
+
+
