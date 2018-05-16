@@ -8,18 +8,18 @@
   </url>
   
   <url>
+    <loc>http://gawu.me/</loc>
+    <lastmod>2018-05-16T08:15:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://gawu.me/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://gawu.me/posts/</loc>
-    <lastmod>2018-05-16T08:15:22+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://gawu.me/</loc>
     <lastmod>2018-05-16T08:15:22+08:00</lastmod>
     <priority>0</priority>
   </url>

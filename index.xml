@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Reborn</title>
+    <title></title>
     <link>http://gawu.me/</link>
-    <description>Recent content on Reborn</description>
+    <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
+    <language>en-us</language>
     <lastBuildDate>Wed, 16 May 2018 08:15:22 +0800</lastBuildDate>
     
 	<atom:link href="http://gawu.me/index.xml" rel="self" type="application/rss+xml" />
@@ -17,9 +17,7 @@
       <pubDate>Wed, 16 May 2018 08:15:22 +0800</pubDate>
       
       <guid>http://gawu.me/posts/reborn/</guid>
-      <description>&lt;p&gt;本文详细讲述如何模拟登录某某大学图书馆系统。为什么说是某某大学？往下看了就知道了 😉&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>New objective: Learn more openly!</description>
     </item>
     
   </channel>

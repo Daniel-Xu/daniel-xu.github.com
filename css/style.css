@@ -117,7 +117,7 @@ html, body {
 
 body {
     font: 16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #666;
+    color: #3A4145;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -271,13 +271,13 @@ ul {
 }
 
 li {
-    list-style-position: outside;
+    list-style-position: inside;
     /* text-indent: -1.5em; */
-    margin-left: 1.5em;
+    /* margin-left: 1.5em; */
 }
 
 ul>li {
-    list-style-type: disc;
+    list-style-type: circle;
 }
 
 
@@ -357,12 +357,22 @@ em, i {
 .post h2.headline .tags {
     font: normal 13px/1.5em "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: -5px 0 40px 0;
-    color: #b2b9be;
+    /* color: #b2b9be; */
+    color: #9EABB3;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: 5px;
     display: block;
+}
+
+.post h2.headline .tags a {
+    border: #E3E9ED 1px solid;
+    color: #9EABB3;
+    padding: 2px 7px;
+    text-transform: lowercase;
+    border-radius: 5px;
+    margin-right: 3px;
 }
 
 #post-list h2 {
@@ -372,7 +382,7 @@ em, i {
 }
 
 h3, h4, h5 {
-    color: #333;
+    color: #2E2E2E
 }
 
 h3 {
@@ -466,6 +476,19 @@ img {
     border-radius: 3px;
 }
 
+figure.illustration {
+    height: 60vh;
+    margin-left: -15%;
+    width: 130%;
+    max-width: none;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+figure.illustration image {
+  object-fit: scale-down;
+}
 
 /* Made with Cactus Badge */
 
@@ -931,4 +954,16 @@ a.symbol:hover {
 }
 .page-tags ul li a:hover {
     color: #5694f1;
+}
+
+/*color */
+
+.red {
+  color: red !important;
+}
+
+/*code*/
+code {
+  color: white;
+  background: #333E4B;
 }
