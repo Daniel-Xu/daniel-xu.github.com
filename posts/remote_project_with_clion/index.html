@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://gawu.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Remote project with CLion"/>
+  <meta name="twitter:description" content="Choose CLion for the best debugging experience"/>
+  
+    <meta name="twitter:site" content="@Daniel_Xu_For"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Daniel Xu"/>
+  
+
+
+
+		
+		<meta name="author" content="Daniel Xu">
+		<meta name="description" content="Daniel Reborn">
+		<meta name="generator" content="Hugo 0.52" />
+		<title>Remote project with CLion &middot; </title>
+		<link rel="shortcut icon" href="http://gawu.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://gawu.me/css/style.css">
+		<link rel="stylesheet" href="http://gawu.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://gawu.me/css/font-awesome.min.css">
+		
+
+		
+		<link href="http://gawu.me/index.xml" rel="alternate" type="application/rss+xml" title="" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://gawu.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://gawu.me/posts'>Archive</a>
+	<a href='http://gawu.me/tags'>Tags</a>
+	<a href='http://gawu.me/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="http://gawu.me/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Remote project with CLion
+                    </h1>
+                    <h2 class="headline">
+                    Jun 2, 2019 02:54
+                    · 644 words
+                    · 4 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="http://gawu.me/tags/dev">Dev</a>
+                          
+                              <a href="http://gawu.me/tags/clion">CLion</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#⓵-remote-project-introduction">⓵ Remote Project Introduction</a></li>
+<li><a href="#⓶-docker-environment">⓶ Docker Environment</a></li>
+<li><a href="#⓷-clion">⓷ CLion</a>
+<ul>
+<li><a href="#toolchain">toolchain</a></li>
+<li><a href="#cmake">cmake</a></li>
+<li><a href="#deployment">deployment</a></li>
+</ul></li>
+<li><a href="#⓸-issues-i-came-across">⓸ Issues I came across</a>
+<ul>
+<li><a href="#changes-don-t-apply">changes don&rsquo;t apply</a></li>
+<li><a href="#docker-or-remote-dev-server">docker or remote dev server</a></li>
+<li><a href="#how-to-get-more-information-when-things-just-don-t-work">how to get more information when things just don&rsquo;t work</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <p>I&rsquo;ve been using VIM/Spacemacs for about 10 years, but recently I switched to IDE (CLion) for C++ development mainly because of the <strong>superior debugging experience</strong>.</p>
+
+<p>To be honest, it&rsquo;s not a smooth switching process, so I decide to share with you about how to set up the whole environment and you can really enjoy working on your C++ projects.</p>
+
+<h2 id="⓵-remote-project-introduction">⓵ Remote Project Introduction</h2>
+
+<p>Let&rsquo;s take a look at the debugging experience first:</p>
+
+<p><img src="/imgs/clion-1.gif" alt="clion" /></p>
+
+<p>As you see,  we can set up breakpoints directly in CLion and check all the variables without typing <code>print variable_name</code>. This is way faster and more intuitive than debugging directly within GDB.</p>
+
+<p>You may ask: where does remote project kick in?</p>
+
+<p>If you pay close attention to the demo, you can see the GDB debugger in it. However, as we all know it&rsquo;s usually LLDB debugger on OSX. Instead of downloading Xcode tools and setting up GDB on my mac, I just spin up a docker container with some essential tools I need for C++ development in it. Then I debug the project using gdb from the docker container.</p>
+
+<p>Of course, you can choose to use GDB on OSX, but when it comes to project that can&rsquo;t compile/install on Mac, you will still need a docker container or dev server.</p>
+
+<p>This is a Fifty-thousand foot view of how remote project works:
+<img src="/imgs/2019-06-03%20at%2011.51%20PM.png" alt="2019-06-03 at 11.51 P" /></p>
+
+<h2 id="⓶-docker-environment">⓶ Docker Environment</h2>
+
+<p>In the <code>Dockerfile</code>, I pick <code>Ubunbtu</code> as my development environment, then set up the ssh server for code sync and install gcc/g++, cmake, gdb etc.</p>
+
+<p>Initially, <code>Alpine linux</code> was my choice as it&rsquo;s small. However, CLion doesn&rsquo;t play well with it because some linux command options are not supported in Apline.</p>
+
+<pre><code class="language-Dockerfile">FROM ubuntu:bionic
+
+########################################################
+# Essential packages for remote debugging and login in
+########################################################
+
+RUN apt-get update &amp;&amp; apt-get upgrade -y &amp;&amp; apt-get install -y \
+    apt-utils gcc g++ openssh-server cmake build-essential gdb gdbserver rsync vim
+
+# Taken from - https://docs.docker.com/engine/examples/running_ssh_service/#environment-variables
+
+RUN mkdir /var/run/sshd
+RUN echo 'root:root' | chpasswd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE &quot;in users profile&quot;
+RUN echo &quot;export VISIBLE=now&quot; &gt;&gt; /etc/profile
+
+# 22 for ssh server.
+EXPOSE 22
+
+RUN useradd -ms /bin/bash debugger
+COPY id_rsa.pub /home/debugger/.ssh/authorized_keys
+RUN echo 'debugger:hacker' | chpasswd
+
+########################################################
+# Add custom packages and development environment here
+########################################################
+
+########################################################
+CMD [&quot;/usr/sbin/sshd&quot;, &quot;-D&quot;]
+</code></pre>
+
+<p>In docker-compose file, we specify some security options to be able to use remote gdb debugging, also port mapping is required for ssh communication.</p>
+
+<pre><code>version: '3'
+
+services:
+  gdbserver:
+    build: .
+    security_opt: # options needed for gdb debugging
+      - seccomp:unconfined
+      - apparmor:unconfined
+    container_name: debug
+    ports:
+      - &quot;7776:22&quot;
+</code></pre>
+
+<p>Check the detailed instruction on how to start the container from the <a href="https://github.com/Daniel-Xu/clion_dev">README</a></p>
+
+<h2 id="⓷-clion">⓷ CLion</h2>
+
+<h3 id="toolchain">toolchain</h3>
+
+<p>First of all, we need to add a new toolchain which will create a remote host for us to upload the code.</p>
+
+<p><img src="/imgs/2019-06-02%20at%2012.21%20PM.png" alt="2019-06-02 at 12.21 P" /></p>
+
+<h3 id="cmake">cmake</h3>
+
+<p>Then, connect your toolchain to a CMake profile:</p>
+
+<p><img src="/imgs/2019-06-02%20at%2012.34%20PM.png" alt="2019-06-02 at 12.34 P" /></p>
+
+<h3 id="deployment">deployment</h3>
+
+<p>For the deployment, we can specify the <code>local -&gt; remote</code> directory mapping.</p>
+
+<p><img src="/imgs/2019-06-02%20at%2012.26%20PM-1.png" alt="2019-06-02 at 12.26 P" /></p>
+
+<p>After all your code is synced to the docker container/remote server, you can start to debug your project within CLion 🎆.</p>
+
+<p><strong>Remember that you should always start with a simple project, get familiar with the whole process, make it work and then work on more complex one.</strong></p>
+
+<h2 id="⓸-issues-i-came-across">⓸ Issues I came across</h2>
+
+<h3 id="changes-don-t-apply">changes don&rsquo;t apply</h3>
+
+<p>When this happens, I always upload the whole project manually and build again.</p>
+
+<p><img src="/imgs/2019-06-02%20at%2012.51%20PM.png" alt="2019-06-02 at 12.51 P" /></p>
+
+<h3 id="docker-or-remote-dev-server">docker or remote dev server</h3>
+
+<p>The code sync could take quite some time for large project, you might need to upload it manually if new change doesn&rsquo;t apply, therefore, docker container is a better choice as it will be <strong>faster</strong> to transfer files between the container and the host machine.</p>
+
+<h3 id="how-to-get-more-information-when-things-just-don-t-work">how to get more information when things just don&rsquo;t work</h3>
+
+<p>If you are curious about what happens behind the scenes, you can check the log:</p>
+
+<p><img src="/imgs/2019-06-03%20at%201.40%20PM.png" alt="2019-06-03 at 1.40 P" /></p>
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'daniel-reborn'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/Daniel-Xu">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/Daniel_Xu_For">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="http://weibo.com/danielreborn">
+        <i class="fa fa-weibo"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+      © Copyright 2019 <br/>
+      Made with <i class="fa fa-heart red" aria-hidden="true"></i> by Daniel Xu
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://gawu.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://gawu.me/js/main.js"></script>
+<script src="http://gawu.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+
+
+
+
+    </body>
+</html>

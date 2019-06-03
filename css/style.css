@@ -136,7 +136,7 @@ h2 {
 
 .profile #wrapper {
     padding: 60px 40px 0px;
-    max-width: 600px;
+    max-width: 770px;
     margin: 0 auto;
 }
 
@@ -155,7 +155,7 @@ h2 {
 }
 
 .profile h1 {
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 0px;
     font-size: 20px;
     color: #222;
@@ -163,7 +163,7 @@ h2 {
 
 .profile h2 {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 400;
     color: #aaa;
     margin-top: 10px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -335,13 +335,13 @@ em, i {
     margin-top: 40px;
     margin-bottom: 20px;
     color: #222;
-    font: 300 32px/1.4em "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 500 32px/1.4em "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .post h2 {
     margin-top: 20px;
     margin-bottom: 10px;
-    font: 300 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 400 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #111;
 }
 
@@ -388,6 +388,7 @@ h3, h4, h5 {
 h3 {
     font-size: 20px;
     font-weight: 400;
+    color:#4B22E1 !important
 }
 
 h4 {
@@ -571,7 +572,7 @@ Post List
 #header {
 }
 #wrapper.post {
-    max-width: 670px;
+    max-width: 770px;
 }
 .post {
     margin: auto;
@@ -883,7 +884,7 @@ a.symbol:hover {
  */
 #toc {
   line-height: 1em;
-  font-size: .7em;
+  font-size: .8em;
   word-wrap: break-word;
   padding: 8px;
   padding-left: 16px;
@@ -908,7 +909,7 @@ a.symbol:hover {
 #TableOfContents ul {
   list-style-type:none;
   margin: 0;
-  padding: 0 .5em;
+  padding: 0 1.5em;
 }
 #TableOfContents ul li {
   list-style-type: none;
@@ -965,5 +966,5 @@ a.symbol:hover {
 /*code*/
 code {
   color: white;
-  background: #333E4B;
+  background: #333E4B !important;
 }

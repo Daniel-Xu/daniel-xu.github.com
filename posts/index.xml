@@ -6,10 +6,19 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 May 2018 08:15:22 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 02:54:11 +0000</lastBuildDate>
     
 	<atom:link href="http://gawu.me/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Remote project with CLion</title>
+      <link>http://gawu.me/posts/remote_project_with_clion/</link>
+      <pubDate>Sun, 02 Jun 2019 02:54:11 +0000</pubDate>
+      
+      <guid>http://gawu.me/posts/remote_project_with_clion/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve been using VIM/Spacemacs for about 10 years, but recently I switched to IDE (CLion) for C++ development mainly because of the &lt;strong&gt;superior debugging experience&lt;/strong&gt;.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Reborn</title>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://gawu.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content=""/>
+  <meta name="twitter:description" content="Why inefficient query can increase cpu load That is because the data was stored in the InnoDB Buffer Pool, so instead of having to read those 2.5M rows per second from disk, it was fetching them from memory. The stress had moved from disk to CPU"/>
+  
+    <meta name="twitter:site" content="@Daniel_Xu_For"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Daniel Xu"/>
+  
+
+
+
+		
+		<meta name="author" content="Daniel Xu">
+		<meta name="description" content="Daniel Reborn">
+		<meta name="generator" content="Hugo 0.52" />
+		<title> &middot; </title>
+		<link rel="shortcut icon" href="http://gawu.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://gawu.me/css/style.css">
+		<link rel="stylesheet" href="http://gawu.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://gawu.me/css/font-awesome.min.css">
+		
+
+		
+		<link href="http://gawu.me/index.xml" rel="alternate" type="application/rss+xml" title="" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://gawu.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://gawu.me/posts'>Archive</a>
+	<a href='http://gawu.me/tags'>Tags</a>
+	<a href='http://gawu.me/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="http://gawu.me/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        
+                    </h1>
+                    <h2 class="headline">
+                    Jan 1, 0001 00:00
+                    · 46 words
+                    · 1 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#why-inefficient-query-can-increase-cpu-load">Why inefficient query can increase cpu load</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<h1 id="why-inefficient-query-can-increase-cpu-load">Why inefficient query can increase cpu load</h1>
+
+<p>That is because the data was stored in the InnoDB Buffer Pool, so instead of having to read those 2.5M rows per second from disk, it was fetching them from memory. The stress had moved from disk to CPU</p>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'daniel-reborn'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/Daniel-Xu">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/Daniel_Xu_For">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="http://weibo.com/danielreborn">
+        <i class="fa fa-weibo"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+      © Copyright 2019 <br/>
+      Made with <i class="fa fa-heart red" aria-hidden="true"></i> by Daniel Xu
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://gawu.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://gawu.me/js/main.js"></script>
+<script src="http://gawu.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+
+
+
+
+    </body>
+</html>
