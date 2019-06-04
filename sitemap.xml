@@ -3,23 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://gawu.me/posts/remote_project_with_clion/</loc>
-    <lastmod>2019-06-02T02:54:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://gawu.me/posts/reborn/</loc>
-    <lastmod>2018-05-16T08:15:22+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://gawu.me/</loc>
     <lastmod>2019-06-02T02:54:11+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://gawu.me/categories/</loc>
     <priority>0</priority>
   </url>
   
@@ -42,14 +27,34 @@
   </url>
   
   <url>
+    <loc>http://gawu.me/posts/remote_project_with_clion/</loc>
+    <lastmod>2019-06-02T02:54:11+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://gawu.me/tags/</loc>
     <lastmod>2019-06-02T02:54:11+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://gawu.me/posts/reborn/</loc>
+    <lastmod>2018-05-16T08:15:22+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://gawu.me/tags/thought/</loc>
     <lastmod>2018-05-16T08:15:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/about/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/categories/</loc>
     <priority>0</priority>
   </url>
   
