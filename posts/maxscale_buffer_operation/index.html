@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://gawu.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="MaxScale buffer operation"/>
+  <meta name="twitter:description" content="Internal implementation of MaxScale buffer operation"/>
+  
+    <meta name="twitter:site" content="@Daniel_Xu_For"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Daniel Xu"/>
+  
+
+
+
+		
+		<meta name="author" content="Daniel Xu">
+		<meta name="description" content="Daniel Reborn">
+		<meta name="generator" content="Hugo 0.55.6" />
+		<title>MaxScale buffer operation &middot; </title>
+		<link rel="shortcut icon" href="http://gawu.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://gawu.me/css/style.css">
+		<link rel="stylesheet" href="http://gawu.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://gawu.me/css/font-awesome.min.css">
+		
+
+		
+		<link href="http://gawu.me/index.xml" rel="alternate" type="application/rss+xml" title="" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://gawu.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://gawu.me/posts'>Archive</a>
+	<a href='http://gawu.me/tags'>Tags</a>
+	<a href='http://gawu.me/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="http://gawu.me/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        MaxScale buffer operation
+                    </h1>
+                    <h2 class="headline">
+                    Jun 29, 2019 18:54
+                    · 323 words
+                    · 2 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="http://gawu.me/tags/maxscale">MaxScale</a>
+                          
+                              <a href="http://gawu.me/tags/src">Src</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#⓵-underlying-structure">⓵ underlying structure</a></li>
+<li><a href="#⓶-operations">⓶ operations</a>
+<ul>
+<li><a href="#gwbuf-length-b">GWBUF_LENGTH(b)</a></li>
+<li><a href="#gwbuf-data-b">GWBUF_DATA(b)</a></li>
+<li><a href="#gwbuf-is-contiguous-b">GWBUF_IS_CONTIGUOUS(b)</a></li>
+<li><a href="#gwbuf-empty-b">GWBUF_EMPTY(b)</a></li>
+<li><a href="#gwbuf-consume-b-bytes">GWBUF_CONSUME(b, bytes)</a></li>
+<li><a href="#gwbuf-length-buffer">gwbuf_length(buffer)</a></li>
+<li><a href="#gwbuf-append-orig-buffer">gwbuf_append(orig, buffer)</a></li>
+<li><a href="#gwbuf-consume-buffer-bytes">gwbuf_consume(buffer, bytes)</a></li>
+<li><a href="#gwbuf-make-contiguous-buffer">gwbuf_make_contiguous(buffer)</a></li>
+<li><a href="#gwbuf-clone-one-buffer">gwbuf_clone_one(buffer)</a></li>
+<li><a href="#gwbuf-clone-buffer">gwbuf_clone(buffer)</a></li>
+<li><a href="#gwbuf-clone-portion-buffer-offset-length">gwbuf_clone_portion(buffer, offset, length)</a></li>
+<li><a href="#gwbuf-split-buffer-length">gwbuf_split(buffer, length)</a></li>
+<li><a href="#gwbuf-copy-data-buffer-offset-bytes-dest">gwbuf_copy_data(buffer, offset, bytes, dest)</a></li>
+<li><a href="#gwbuf-deep-clone-buffer">gwbuf_deep_clone(buffer)</a></li>
+</ul></li>
+<li><a href="#⓷-thoughts">⓷ Thoughts</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <p>Gateway buffer is the basic building block of protocol implementation, today I will walk you through the structure of <code>GWBUF</code> and operations you can do with it.</p>
+
+<h2 id="⓵-underlying-structure">⓵ underlying structure</h2>
+
+<p><code>GWBUF</code> uses shared buffer and reference counting to avoid <strong>unnecessary copying</strong>.
+Different buffers are chained together with <code>next</code> pointer.  The real data is stored in <code>unsigned char</code> array which begins at <code>start</code> pointer, and ends at <code>end</code> pointer. The <code>start</code> and <code>end</code> member are just like iterator in STL.</p>
+
+<p><img src="/imgs/carbon%20-1-.png" alt="carbon -1-" /></p>
+
+<p>I&rsquo;ve deleted some implementation related code to make it much easier to follow. Here is what you get when allocating one buffer:</p>
+
+<p><img src="/imgs/15618052368292.jpg" alt="-w562" /></p>
+
+<h2 id="⓶-operations">⓶ operations</h2>
+
+<h3 id="gwbuf-length-b">GWBUF_LENGTH(b)</h3>
+
+<p>Get the bytes of the data in the buffer:</p>
+
+<p><img src="/imgs/15618046723760.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-data-b">GWBUF_DATA(b)</h3>
+
+<p>Get the start of the data in the buffer:</p>
+
+<p><img src="/imgs/15618047324826.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-is-contiguous-b">GWBUF_IS_CONTIGUOUS(b)</h3>
+
+<p>Check if there&rsquo;s only one gateway buffer in the chain:</p>
+
+<p><img src="/imgs/15618047431101.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-empty-b">GWBUF_EMPTY(b)</h3>
+
+<p>Check if there&rsquo;s no data in the buffer:
+<img src="/imgs/15618047544471.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-consume-b-bytes">GWBUF_CONSUME(b, bytes)</h3>
+
+<p>Move the <code>start</code> pointer to <code>start+bytes</code> position, or <code>end</code> if there&rsquo;s not enough space.</p>
+
+<p><img src="/imgs/15618047645181.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-length-buffer">gwbuf_length(buffer)</h3>
+
+<p>Get total length of all buffers in the chain:</p>
+
+<p><img src="/imgs/15618047787492.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-append-orig-buffer">gwbuf_append(orig, buffer)</h3>
+
+<p>Append a buffer to the chain:
+<img src="/imgs/15618047952327.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-consume-buffer-bytes">gwbuf_consume(buffer, bytes)</h3>
+
+<p>Move the <code>start</code> pointer by bytes, release unused buffer in the meantime.
+<img src="/imgs/15618048226338.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-make-contiguous-buffer">gwbuf_make_contiguous(buffer)</h3>
+
+<p>Allocate new buffer, and copy data from all buffers in the chain.</p>
+
+<p><img src="/imgs/15618048456393.jpg" alt="-w430" /></p>
+
+<h3 id="gwbuf-clone-one-buffer">gwbuf_clone_one(buffer)</h3>
+
+<p>Allocate a new buffer with no data, and point shared buffer to the original one, the reference count is increased by 1.</p>
+
+<p><img src="/imgs/15618046415066.jpg" alt="-w428" /></p>
+
+<h3 id="gwbuf-clone-buffer">gwbuf_clone(buffer)</h3>
+
+<p>Like <code>gwbuf_clone_one</code>, but clone all the buffers in the chain.</p>
+
+<p><img src="/imgs/15618049461161.jpg" alt="-w446" /></p>
+
+<h3 id="gwbuf-clone-portion-buffer-offset-length">gwbuf_clone_portion(buffer, offset, length)</h3>
+
+<p>Clone part of the original buffer.
+<img src="/imgs/15618049640620.jpg" alt="-w446" /></p>
+
+<h3 id="gwbuf-split-buffer-length">gwbuf_split(buffer, length)</h3>
+
+<p>Split the chain according to length. Return the first half, and assign the second half to the passed in parameter <code>buffer</code>.
+<img src="/imgs/15618049867751.jpg" alt="-w562" /></p>
+
+<h3 id="gwbuf-copy-data-buffer-offset-bytes-dest">gwbuf_copy_data(buffer, offset, bytes, dest)</h3>
+
+<p>Get the real data from the buffer and save it to the dest.
+<img src="/imgs/15618050116981.jpg" alt="-w562" /></p>
+
+<h3 id="gwbuf-deep-clone-buffer">gwbuf_deep_clone(buffer)</h3>
+
+<p>Copy the real data instead of sharing between multiple buffers.
+<img src="/imgs/15618050263652.jpg" alt="-w562" /></p>
+
+<h2 id="⓷-thoughts">⓷ Thoughts</h2>
+
+<p>In C++, we have <code>move</code> semantics which can be used to avoid copying. Maybe we can apply it to the design of buffer?</p>
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'daniel-reborn'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/Daniel-Xu">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/Daniel_Xu_For">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+    <a class="symbol" href="http://weibo.com/danielreborn">
+        <i class="fa fa-weibo"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+      © Copyright 2019 <br/>
+      Made with <i class="fa fa-heart red" aria-hidden="true"></i> by Daniel Xu
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://gawu.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://gawu.me/js/main.js"></script>
+<script src="http://gawu.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-38727848-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>

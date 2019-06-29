@@ -4,7 +4,36 @@
   
   <url>
     <loc>http://gawu.me/</loc>
-    <lastmod>2019-06-02T02:54:11+00:00</lastmod>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/tags/maxscale/</loc>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/posts/maxscale_buffer_operation/</loc>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/posts/</loc>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/tags/src/</loc>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/tags/</loc>
+    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -21,20 +50,8 @@
   </url>
   
   <url>
-    <loc>http://gawu.me/posts/</loc>
-    <lastmod>2019-06-02T02:54:11+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://gawu.me/posts/remote_project_with_clion/</loc>
     <lastmod>2019-06-02T02:54:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://gawu.me/tags/</loc>
-    <lastmod>2019-06-02T02:54:11+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

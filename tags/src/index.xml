@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Src on </title>
+    <link>http://gawu.me/tags/src/</link>
+    <description>Recent content in Src on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 29 Jun 2019 18:54:13 +0800</lastBuildDate>
+    
+	<atom:link href="http://gawu.me/tags/src/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MaxScale buffer operation</title>
+      <link>http://gawu.me/posts/maxscale_buffer_operation/</link>
+      <pubDate>Sat, 29 Jun 2019 18:54:13 +0800</pubDate>
+      
+      <guid>http://gawu.me/posts/maxscale_buffer_operation/</guid>
+      <description>&lt;p&gt;Gateway buffer is the basic building block of protocol implementation, today I will walk you through the structure of &lt;code&gt;GWBUF&lt;/code&gt; and operations you can do with it.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
