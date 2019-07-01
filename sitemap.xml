@@ -4,8 +4,31 @@
   
   <url>
     <loc>http://gawu.me/</loc>
-    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
+    <lastmod>2019-07-01T22:17:00+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/tags/database/</loc>
+    <lastmod>2019-07-01T22:17:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/posts/</loc>
+    <lastmod>2019-07-01T22:17:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/tags/</loc>
+    <lastmod>2019-07-01T22:17:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://gawu.me/posts/newcomers_guild_to_database_system/</loc>
+    <lastmod>2019-07-01T22:17:00+08:00</lastmod>
   </url>
   
   <url>
@@ -20,19 +43,7 @@
   </url>
   
   <url>
-    <loc>http://gawu.me/posts/</loc>
-    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://gawu.me/tags/src/</loc>
-    <lastmod>2019-06-29T18:54:13+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://gawu.me/tags/</loc>
     <lastmod>2019-06-29T18:54:13+08:00</lastmod>
     <priority>0</priority>
   </url>
